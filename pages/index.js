@@ -1,32 +1,32 @@
-import Link from 'next/link'
+import Link from 'next/link';
 
-import queryGraphql from '../shared/query-graphql'
+import queryGraphql from '../shared/query-graphql';
 
-export default function UserListing({ users }) {
+export default function TodoListing({ todos }) {
   return (
     <div>
-      <h1>User Listing</h1>
+      <h1>Todos Listing</h1>
       <ul>
-        {users.map((user) => (
-          <li key={user.username}>
-            <Link href="/[username]" as={`/${user.username}`}>
-              <a>{user.name}</a>
+        {todos.map((todo) => (
+          <li key={todo.title}>
+            <Link href="/[title]" as={`/${todo.id}`}>
+              <a>{todo.title}</a>
             </Link>
           </li>
         ))}
       </ul>
     </div>
-  )
+  );
 }
 
 export async function getStaticProps() {
-  const { users } = await queryGraphql(`
+  const { todos } = await queryGraphql(`
     query {
-      users {
-        name
-        username
+      todos {
+        id
+        title
       }
     }
-  `)
-  return { props: { users } }
+  `);
+  return { props: { todos } };
 }
